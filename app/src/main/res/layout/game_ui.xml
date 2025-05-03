@@ -1,0 +1,202 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/space">
+
+    <!-- 🔝 TOP BAR -->
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- ❤️ Hearts -->
+        <ImageView android:id="@+id/game_IMG_heart1" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/heart" />
+        <ImageView android:id="@+id/game_IMG_heart2" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/heart" />
+        <ImageView android:id="@+id/game_IMG_heart3" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/heart" />
+    </LinearLayout>
+
+    <!-- ⬇️ FAB BAR -->
+    <LinearLayout
+        android:id="@+id/fab_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <!-- Left button -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/game_BTN_left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:iconGravity="textStart"
+            app:icon="@drawable/left_arrow"
+            app:iconPadding="8dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            app:backgroundTint="@color/green" />
+
+        <Space
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
+
+        <!-- Right button -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/game_BTN_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:iconGravity="textStart"
+            app:icon="@drawable/right_arrow"
+            app:iconPadding="8dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            app:backgroundTint="@color/green" />
+    </LinearLayout>
+
+
+    <!-- 🧱 MATRIX (CAR IS ON LAST ROW) -->
+    <LinearLayout
+        android:id="@+id/matrix_lanes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_bar"
+        android:layout_above="@id/fab_bar"
+        android:orientation="horizontal">
+
+        <!-- Lane 0 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor0"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/earth"
+                android:id="@+id/game_IMG_earth_0"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+
+
+
+        <!-- Lane 1 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/earth"
+                android:id="@+id/game_IMG_earth_1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+
+
+        <!-- Lane 2 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/comet"
+                android:id="@+id/game_IMG_meteor8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/smaller_images"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:src="@drawable/earth"
+                android:id="@+id/game_IMG_earth_2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

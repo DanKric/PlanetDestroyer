@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/start"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/space">
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/start_LBL_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/space"
+        android:text="🌏 Planet Destroyer"
+        android:textColor="@color/white"
+        android:textSize="@dimen/title_text_size"
+        android:textStyle="bold"
+
+        />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/start_FAB_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="START"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size"
+        android:backgroundTint="@color/dark_green"
+        app:icon="@drawable/baseline_play_arrow_24"
+        app:iconTint="@color/green"
+        app:iconGravity="textStart"
+
+        />
+
+</RelativeLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name" translatable="false">25B-11345B-L04</string>
+    <string name="play">play</string>
+    <string name="stop">stop</string>
+</resources>

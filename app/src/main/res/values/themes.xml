@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ✅ Main app theme -->
+    <style name="Theme.PlanetDestroyer" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here -->
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorSecondary">@color/dark_green</item>
+    </style>
+
+</resources>
