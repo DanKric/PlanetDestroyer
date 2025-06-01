@@ -102,6 +102,14 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/game_IMG_meteor15"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
                 android:src="@drawable/earth"
                 android:id="@+id/game_IMG_earth_0"
                 android:layout_width="match_parent"
@@ -143,6 +151,14 @@
                 android:layout_height="0dp"
                 android:padding="@dimen/smaller_images"
                 android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor16"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
 
             <ImageView
                 android:src="@drawable/earth"
@@ -187,6 +203,14 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/game_IMG_meteor17"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
                 android:src="@drawable/earth"
                 android:id="@+id/game_IMG_earth_2"
                 android:layout_width="match_parent"
@@ -194,6 +218,104 @@
                 android:layout_weight="1"
                 android:padding="@dimen/smaller_images"
                 android:scaleType="fitCenter" />
+        </LinearLayout>
+
+        <!-- Lane 3 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor9"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor10"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor11"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor18"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_earth_3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:scaleType="fitCenter"
+                android:src="@drawable/earth" />
+        </LinearLayout>
+
+        <!-- Lane 4 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor12"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor13"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor14"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_meteor19"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:src="@drawable/comet" />
+
+            <ImageView
+                android:id="@+id/game_IMG_earth_4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/smaller_images"
+                android:scaleType="fitCenter"
+                android:src="@drawable/earth" />
         </LinearLayout>
 
 

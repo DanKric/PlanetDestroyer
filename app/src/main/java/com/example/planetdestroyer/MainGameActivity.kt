@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import android.media.MediaPlayer
+
 
 class MainGameActivity : AppCompatActivity() {
 
@@ -20,8 +22,8 @@ class MainGameActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var runnable: Runnable
 
-    private val rows = 4
-    private val cols = 3
+    private val rows = 5
+    private val cols = 5
     private val delay: Long = 700
 
     private var currentLane = 1 // Start in the center lane
@@ -34,11 +36,13 @@ class MainGameActivity : AppCompatActivity() {
 
     private val meteorRes = R.drawable.comet
     private val earthRes = R.drawable.earth
+    private var explosionSound: MediaPlayer? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_ui)
-
+        explosionSound = MediaPlayer.create(this, R.raw.meteor_explosion)
         initViews()
         startGameLoop()
     }
@@ -49,18 +53,22 @@ class MainGameActivity : AppCompatActivity() {
         heart3 = findViewById(R.id.game_IMG_heart3)
 
         val ids = arrayOf(
-            arrayOf(R.id.game_IMG_meteor0, R.id.game_IMG_meteor3, R.id.game_IMG_meteor6),
-            arrayOf(R.id.game_IMG_meteor1, R.id.game_IMG_meteor4, R.id.game_IMG_meteor7),
-            arrayOf(R.id.game_IMG_meteor2, R.id.game_IMG_meteor5, R.id.game_IMG_meteor8),
-            arrayOf(R.id.game_IMG_earth_0, R.id.game_IMG_earth_1, R.id.game_IMG_earth_2)
+            arrayOf(R.id.game_IMG_meteor0,  R.id.game_IMG_meteor1,  R.id.game_IMG_meteor2,  R.id.game_IMG_meteor15, R.id.game_IMG_earth_0),
+            arrayOf(R.id.game_IMG_meteor3,  R.id.game_IMG_meteor4,  R.id.game_IMG_meteor5,  R.id.game_IMG_meteor16, R.id.game_IMG_earth_1),
+            arrayOf(R.id.game_IMG_meteor6,  R.id.game_IMG_meteor7,  R.id.game_IMG_meteor8,  R.id.game_IMG_meteor17, R.id.game_IMG_earth_2),
+            arrayOf(R.id.game_IMG_meteor9,  R.id.game_IMG_meteor10, R.id.game_IMG_meteor11, R.id.game_IMG_meteor18, R.id.game_IMG_earth_3),
+            arrayOf(R.id.game_IMG_meteor12, R.id.game_IMG_meteor13, R.id.game_IMG_meteor14, R.id.game_IMG_meteor19, R.id.game_IMG_earth_4)
         )
+
+
 
         for (i in 0 until rows) {
             for (j in 0 until cols) {
-                meteorViews[i][j] = findViewById(ids[i][j])
+                meteorViews[i][j] = findViewById(ids[j][i])
                 meteorViews[i][j]?.setImageResource(0)
             }
         }
+
 
         showCarAtLane(currentLane)
 
@@ -123,25 +131,26 @@ class MainGameActivity : AppCompatActivity() {
 
     private fun checkCollision() {
         for (j in 0 until cols) {
-            if (meteorMatrix[3][j] == 1) {
+            if (meteorMatrix[4][j] == 1) {
                 if (j == currentLane) {
                     lives--
                     updateHeartsUI()
+                    explosionSound?.start()
                     vibrate()
 
                     val toast = Toast.makeText(this, "💥 Ouch! Lives left: $lives", Toast.LENGTH_SHORT)
                     toast.show()
-                    Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 600)
+                    Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 800)
                 } else {
                     score+=100
                     val toast = Toast.makeText(this, "✅ Safe! Score: $score", Toast.LENGTH_SHORT)
                     toast.show()
-                    Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 600)
+                    Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 800)
                 }
 
-                meteorMatrix[3][j] = 0
+                meteorMatrix[4][j] = 0
                 if (j != currentLane) {
-                    meteorViews[3][j]?.setImageResource(0)
+                    meteorViews[4][j]?.setImageResource(0)
                 }
             }
         }
@@ -168,14 +177,23 @@ class MainGameActivity : AppCompatActivity() {
 
     private fun showCarAtLane(lane: Int) {
         for (j in 0 until cols) {
-            meteorViews[3][j]?.setImageResource(if (j == lane) earthRes else 0)
+            meteorViews[4][j]?.setImageResource(if (j == lane) earthRes else 0)
         }
     }
+
 
     private fun moveCar(direction: Int) {
         currentLane += direction
         if (currentLane < 0) currentLane = 0
-        if (currentLane > 2) currentLane = 2
+        if (currentLane > 4) currentLane = 4
         showCarAtLane(currentLane)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        explosionSound?.release()
+        explosionSound = null
+    }
+
 }
+
