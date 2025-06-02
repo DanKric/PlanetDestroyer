@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/space">
 
+
+
     <!-- 🔝 TOP BAR -->
     <LinearLayout
         android:id="@+id/top_bar"
@@ -14,10 +16,43 @@
         android:padding="16dp">
 
         <!-- ❤️ Hearts -->
-        <ImageView android:id="@+id/game_IMG_heart1" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/heart" />
-        <ImageView android:id="@+id/game_IMG_heart2" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/heart" />
-        <ImageView android:id="@+id/game_IMG_heart3" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/heart" />
+        <ImageView android:id="@+id/game_IMG_heart1" android:layout_width="35dp" android:layout_height="45dp" android:src="@drawable/heart" />
+        <ImageView android:id="@+id/game_IMG_heart2" android:layout_width="35dp" android:layout_height="45dp" android:src="@drawable/heart" />
+        <ImageView android:id="@+id/game_IMG_heart3" android:layout_width="35dp" android:layout_height="45dp" android:src="@drawable/heart" />
+
+        <!-- Score -->
+        <TextView
+            android:id="@+id/game_LBL_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:gravity="start"
+            android:text="Score: 0"
+            android:textSize="30sp"
+            android:textColor="#FFFFFF"
+            android:padding="8dp"
+            android:maxLines="1"
+            android:ellipsize="none"
+            android:singleLine="true" />
+
+
+        <!-- Distance -->
+        <TextView
+            android:id="@+id/game_LBL_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Dis: 0"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF"
+            android:padding="0dp"
+            android:maxLines="1"
+            android:ellipsize="none"
+            android:singleLine="true" />
+
+
     </LinearLayout>
+
 
     <!-- ⬇️ FAB BAR -->
     <LinearLayout
