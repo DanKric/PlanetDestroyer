@@ -1,6 +1,11 @@
 package com.example.planetdestroyer
 
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.annotation.SuppressLint
+import android.view.View
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,7 +19,7 @@ import android.media.MediaPlayer
 import android.widget.TextView
 
 
-class MainGameActivity : AppCompatActivity() {
+class MainGameActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var heart1: ImageView
     private lateinit var heart2: ImageView
@@ -24,6 +29,12 @@ class MainGameActivity : AppCompatActivity() {
     private lateinit var distanceLabel: TextView
     private lateinit var scoreLabel: TextView
 
+    private lateinit var sensorManager: SensorManager
+    private var accelerometer: Sensor? = null
+    private var lastTiltTime: Long = 0
+    private val tiltCooldown: Long = 300 // ms
+    private var isSensorMode: Boolean = false
+    private var isFastMode: Boolean = false
 
 
     private val handler = Handler(Looper.getMainLooper())
@@ -31,7 +42,7 @@ class MainGameActivity : AppCompatActivity() {
 
     private val rows = 5
     private val cols = 5
-    private val delay: Long = 700
+    private val delay: Long by lazy { if (isFastMode) 550 else 850 }
 
     private var currentLane = 1 // Start in the center lane
     private var lives = 3
@@ -46,36 +57,96 @@ class MainGameActivity : AppCompatActivity() {
     private val meteorRes = R.drawable.comet
     private val earthRes = R.drawable.earth
     private var explosionSound: MediaPlayer? = null
+    private var coinSound: MediaPlayer? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        distanceLabel = findViewById(R.id.game_LBL_distance)
+        isSensorMode = intent.getBooleanExtra("SENSOR_MODE", false)
+        isFastMode = intent.getBooleanExtra("FAST_MODE", false)
+
         scoreLabel = findViewById(R.id.game_LBL_score)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.game_ui)
+        coinSound = MediaPlayer.create(this, R.raw.coin_collect)
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         explosionSound = MediaPlayer.create(this, R.raw.meteor_explosion)
+
+
+        super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.game_ui)
+
+
+
         initViews()
         startGameLoop()
     }
+
+    override fun onResume() {
+        super.onResume()
+        accelerometer?.also {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_GAME)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        explosionSound?.release()
+        explosionSound = null
+        coinSound?.release()
+        coinSound = null
+
+    }
+
 
     private fun initViews() {
         heart1 = findViewById(R.id.game_IMG_heart1)
         heart2 = findViewById(R.id.game_IMG_heart2)
         heart3 = findViewById(R.id.game_IMG_heart3)
         scoreLabel = findViewById(R.id.game_LBL_score)
-        distanceLabel = findViewById(R.id.game_LBL_distance)
-
-
 
         val ids = arrayOf(
-            arrayOf(R.id.game_IMG_meteor0,  R.id.game_IMG_meteor1,  R.id.game_IMG_meteor2,  R.id.game_IMG_meteor15, R.id.game_IMG_earth_0),
-            arrayOf(R.id.game_IMG_meteor3,  R.id.game_IMG_meteor4,  R.id.game_IMG_meteor5,  R.id.game_IMG_meteor16, R.id.game_IMG_earth_1),
-            arrayOf(R.id.game_IMG_meteor6,  R.id.game_IMG_meteor7,  R.id.game_IMG_meteor8,  R.id.game_IMG_meteor17, R.id.game_IMG_earth_2),
-            arrayOf(R.id.game_IMG_meteor9,  R.id.game_IMG_meteor10, R.id.game_IMG_meteor11, R.id.game_IMG_meteor18, R.id.game_IMG_earth_3),
-            arrayOf(R.id.game_IMG_meteor12, R.id.game_IMG_meteor13, R.id.game_IMG_meteor14, R.id.game_IMG_meteor19, R.id.game_IMG_earth_4)
+            arrayOf(
+                R.id.game_IMG_meteor0,
+                R.id.game_IMG_meteor1,
+                R.id.game_IMG_meteor2,
+                R.id.game_IMG_meteor15,
+                R.id.game_IMG_earth_0
+            ),
+            arrayOf(
+                R.id.game_IMG_meteor3,
+                R.id.game_IMG_meteor4,
+                R.id.game_IMG_meteor5,
+                R.id.game_IMG_meteor16,
+                R.id.game_IMG_earth_1
+            ),
+            arrayOf(
+                R.id.game_IMG_meteor6,
+                R.id.game_IMG_meteor7,
+                R.id.game_IMG_meteor8,
+                R.id.game_IMG_meteor17,
+                R.id.game_IMG_earth_2
+            ),
+            arrayOf(
+                R.id.game_IMG_meteor9,
+                R.id.game_IMG_meteor10,
+                R.id.game_IMG_meteor11,
+                R.id.game_IMG_meteor18,
+                R.id.game_IMG_earth_3
+            ),
+            arrayOf(
+                R.id.game_IMG_meteor12,
+                R.id.game_IMG_meteor13,
+                R.id.game_IMG_meteor14,
+                R.id.game_IMG_meteor19,
+                R.id.game_IMG_earth_4
+            )
         )
-
-
 
         for (i in 0 until rows) {
             for (j in 0 until cols) {
@@ -83,17 +154,18 @@ class MainGameActivity : AppCompatActivity() {
                 meteorViews[i][j]?.setImageResource(0)
             }
         }
-
-
         showCarAtLane(currentLane)
-
         findViewById<ExtendedFloatingActionButton>(R.id.game_BTN_left).setOnClickListener {
             moveCar(-1)
         }
-
         findViewById<ExtendedFloatingActionButton>(R.id.game_BTN_right).setOnClickListener {
             moveCar(1)
         }
+        if (isSensorMode) {
+            findViewById<ExtendedFloatingActionButton>(R.id.game_BTN_left).visibility = View.GONE
+            findViewById<ExtendedFloatingActionButton>(R.id.game_BTN_right).visibility = View.GONE
+        }
+
     }
 
     private fun startGameLoop() {
@@ -105,34 +177,44 @@ class MainGameActivity : AppCompatActivity() {
                 handler.postDelayed(this, delay)
                 distance++
                 scoreLabel.text = "Score: $distance"
-                distanceLabel.text = "Dis: $distance"
-
-
             }
         }
         handler.postDelayed(runnable, delay)
     }
 
     private fun updateMeteorMatrix() {
+        // Shift all meteors down
         for (i in rows - 1 downTo 1) {
             for (j in 0 until cols) {
                 meteorMatrix[i][j] = meteorMatrix[i - 1][j]
             }
         }
 
-        for (j in 0 until cols) meteorMatrix[0][j] = 0
+        // Clear top row
+        for (j in 0 until cols) {
+            meteorMatrix[0][j] = 0
+        }
 
         val row1IsEmpty = meteorMatrix[1].all { it == 0 }
         if (row1IsEmpty) {
-            val newCol = (0 until cols).random()
             meteorSpawnCounter++
+            val numMeteors = (2..4).random() // 2–4 meteors
 
-            val shouldSpawnCoin = meteorSpawnCounter % 2 == 0 && (0..2).random() == 0 // 16% at random
-            meteorMatrix[0][newCol] = if (shouldSpawnCoin) 2 else 1
+            val availableCols = (0 until cols).shuffled().take(numMeteors)
+            for (col in availableCols) {
+                meteorMatrix[0][col] = 1 // meteor
+            }
+
+            val shouldSpawnCoin = meteorSpawnCounter % 2 == 0 && (0..2).random() == 0
+            if (shouldSpawnCoin) {
+                val emptyCols = (0 until cols).filter { meteorMatrix[0][it] == 0 }
+                if (emptyCols.isNotEmpty()) {
+                    val coinCol = emptyCols.random()
+                    meteorMatrix[0][coinCol] = 2
+                }
+            }
         }
     }
-
-
 
 
     private fun updateMeteorViews() {
@@ -155,7 +237,6 @@ class MainGameActivity : AppCompatActivity() {
     }
 
 
-
     private fun checkCollision() {
         for (j in 0 until cols) {
             when (meteorMatrix[4][j]) {
@@ -165,7 +246,8 @@ class MainGameActivity : AppCompatActivity() {
                         updateHeartsUI()
                         explosionSound?.start()
                         vibrate()
-                        val toast = Toast.makeText(this, "💥 Ouch! Lives left: $lives", Toast.LENGTH_SHORT)
+                        val toast =
+                            Toast.makeText(this, "💥 Ouch! Lives left: $lives", Toast.LENGTH_SHORT)
                         toast.show()
                         Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 800)
                     } else {
@@ -178,16 +260,19 @@ class MainGameActivity : AppCompatActivity() {
                 2 -> { // Coin
                     if (j == currentLane) {
                         coinsCollected++
-                        val toast = Toast.makeText(this, "💰 Collected! coins: $coinsCollected", Toast.LENGTH_SHORT)
+                        val toast = Toast.makeText(
+                            this,
+                            "💰 Collected! coins: $coinsCollected",
+                            Toast.LENGTH_SHORT
+                        )
+                        coinSound?.start()
                         toast.show()
                         Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 800)
                         meteorMatrix[4][j] = 0
                         meteorViews[4][j]?.setImageResource(0)
                         if (j == currentLane) {
-                            coinsCollected++
                             distance += coinsCollected
                             scoreLabel.text = "Score: $distance"
-                            distanceLabel.text = "Dis: $distance"
                         }
                         showCarAtLane(currentLane)
                     }
@@ -231,23 +316,27 @@ class MainGameActivity : AppCompatActivity() {
         showCarAtLane(currentLane)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        explosionSound?.release()
-        explosionSound = null
-    }
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            val isEmulator = android.os.Build.FINGERPRINT.contains("generic")
+            val tilt = if (isEmulator) event.values[2] else event.values[0]
 
-    private fun calculateMultiplier(): Double {
-        return when {
-            coinsCollected >= 10 -> coinsCollected * 1.05
-            coinsCollected == 0 -> 1.0
-            else -> {
-                val base = 2.0 - 0.1 * (coinsCollected - 1)
-                coinsCollected * base
+            val now = System.currentTimeMillis()
+            if (now - lastTiltTime > tiltCooldown) {
+                if (tilt > 3) {
+                    moveCar(1)
+                    lastTiltTime = now
+                } else if (tilt < -3) {
+                    moveCar(-1)
+                    lastTiltTime = now
+                }
             }
         }
     }
 
 
-}
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        // not needed for this game
+    }
 
+}
