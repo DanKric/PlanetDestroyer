@@ -9,7 +9,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/PlanetDestroye"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanetDestroyer"
@@ -19,7 +19,7 @@
         <activity
             android:name=".StartActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/PlanetDestroye"
             android:theme="@style/Theme.PlanetDestroyer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +29,8 @@
 
         <!-- ✅ Keep your game screen registered here -->
         <activity android:name=".MainGameActivity" />
+        <activity android:name=".GameOverActivity" />
+
     </application>
 
 

@@ -2,7 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/space">
+    >
+
+    <ImageView
+        android:id="@+id/game_IMG_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/space" />
 
 
 
@@ -13,7 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@android:color/transparent"
+        >
 
         <!-- ❤️ Hearts -->
         <ImageView android:id="@+id/game_IMG_heart1" android:layout_width="35dp" android:layout_height="45dp" android:src="@drawable/heart" />
@@ -47,7 +56,9 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:background="@android:color/transparent"
+        >
 
         <!-- Left button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -88,14 +99,18 @@
         android:layout_height="match_parent"
         android:layout_below="@id/top_bar"
         android:layout_above="@id/fab_bar"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@android:color/transparent"
+        >
 
         <!-- Lane 0 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            >
 
             <ImageView
                 android:src="@drawable/comet"

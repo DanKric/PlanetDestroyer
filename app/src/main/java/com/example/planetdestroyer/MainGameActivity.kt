@@ -1,5 +1,7 @@
 package com.example.planetdestroyer
 
+import android.util.Log
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -20,6 +22,8 @@ import android.widget.TextView
 
 
 class MainGameActivity : AppCompatActivity(), SensorEventListener {
+
+    private var gameOver = false
 
     private lateinit var heart1: ImageView
     private lateinit var heart2: ImageView
@@ -60,11 +64,15 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
     private var coinSound: MediaPlayer? = null
 
 
+    @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         isSensorMode = intent.getBooleanExtra("SENSOR_MODE", false)
         isFastMode = intent.getBooleanExtra("FAST_MODE", false)
 
-        scoreLabel = findViewById(R.id.game_LBL_score)
+        setContentView(R.layout.game_ui) // ✅ First inflate the layout
+        scoreLabel = findViewById(R.id.game_LBL_score) // ✅ Then access views
         coinSound = MediaPlayer.create(this, R.raw.coin_collect)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -238,6 +246,7 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
 
 
     private fun checkCollision() {
+        if (gameOver) return
         for (j in 0 until cols) {
             when (meteorMatrix[4][j]) {
                 1 -> { // Meteor
@@ -246,11 +255,9 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
                         updateHeartsUI()
                         explosionSound?.start()
                         vibrate()
-                        val toast =
-                            Toast.makeText(this, "💥 Ouch! Lives left: $lives", Toast.LENGTH_SHORT)
+                        val toast = Toast.makeText(this, "💥 Ouch! Lives left: $lives", Toast.LENGTH_SHORT)
                         toast.show()
                         Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 800)
-                    } else {
                     }
                     meteorMatrix[4][j] = 0
                     meteorViews[4][j]?.setImageResource(0)
@@ -270,16 +277,28 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
                         Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 800)
                         meteorMatrix[4][j] = 0
                         meteorViews[4][j]?.setImageResource(0)
-                        if (j == currentLane) {
-                            distance += coinsCollected
-                            scoreLabel.text = "Score: $distance"
-                        }
+                        distance += coinsCollected
+                        scoreLabel.text = "Score: $distance"
                         showCarAtLane(currentLane)
                     }
                 }
             }
         }
+
+        // ✅ Check if game is over AFTER all collisions are handled
+        if (lives <= 0) {
+            handler.removeCallbacks(runnable)
+            sensorManager.unregisterListener(this)
+            val intent = Intent(this, GameOverActivity::class.java)
+            intent.putExtra("FINAL_SCORE", distance)
+            Log.d("MainGameActivity", "GAME OVER TRIGGERED")
+            startActivity(intent)
+            finish()  // Kill MainGameActivity
+        }
+
+
     }
+
 
 
     private fun updateHeartsUI() {
