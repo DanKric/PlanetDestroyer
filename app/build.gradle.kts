@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services") // ✅ Firebase plugin
 }
+
 
 android {
     namespace = "com.example.planetdestroyer"
@@ -38,13 +40,21 @@ android {
     }
 
     buildFeatures {
-        compose = true
+        viewBinding = true
     }
+
 }
 
 dependencies {
     // 🔧 Required for classic XML-based Material themes (fixes your crash)
     implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
+
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-database-ktx")
+
 
     // Compose dependencies (you can keep them if needed)
     implementation(libs.androidx.core.ktx)
@@ -55,6 +65,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("com.google.firebase:firebase-firestore")
+    implementation(libs.play.services.location)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

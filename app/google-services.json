@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "145469945382",
+    "project_id": "planetpestroyer-60a44",
+    "storage_bucket": "planetpestroyer-60a44.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145469945382:android:94b929431d7ea9aa98d8e7",
+        "android_client_info": {
+          "package_name": "com.example.planetdestroyer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVaKZz_ZoLXwiDM8Gd0-8R4g5KJ-hRGs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

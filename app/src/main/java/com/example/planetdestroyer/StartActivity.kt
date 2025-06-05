@@ -18,6 +18,13 @@ class StartActivity : AppCompatActivity() {
         val buttonMode = findViewById<Button>(R.id.start_BTN_buttons)
         val sensorMode = findViewById<Button>(R.id.start_BTN_sensor)
 
+        val highScoresBtn = findViewById<Button>(R.id.buttonHighScores)
+        highScoresBtn.setOnClickListener {
+            val intent = Intent(this, HighScoresActivity::class.java)
+            startActivity(intent)
+        }
+
+
         buttonMode.setOnClickListener {
             launchGame(sensorMode = false, fastMode = isFast())
         }

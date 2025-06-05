@@ -68,26 +68,21 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.game_ui) // ✅ This must be FIRST
+
         isSensorMode = intent.getBooleanExtra("SENSOR_MODE", false)
         isFastMode = intent.getBooleanExtra("FAST_MODE", false)
 
-        setContentView(R.layout.game_ui) // ✅ First inflate the layout
-        scoreLabel = findViewById(R.id.game_LBL_score) // ✅ Then access views
+        scoreLabel = findViewById(R.id.game_LBL_score)
         coinSound = MediaPlayer.create(this, R.raw.coin_collect)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         explosionSound = MediaPlayer.create(this, R.raw.meteor_explosion)
 
-
-        super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.game_ui)
-
-
-
         initViews()
         startGameLoop()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -287,14 +282,18 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
 
         // ✅ Check if game is over AFTER all collisions are handled
         if (lives <= 0) {
+            gameOver = true // ✅ This prevents repeated calls
             handler.removeCallbacks(runnable)
             sensorManager.unregisterListener(this)
+
             val intent = Intent(this, GameOverActivity::class.java)
             intent.putExtra("FINAL_SCORE", distance)
             Log.d("MainGameActivity", "GAME OVER TRIGGERED")
+
             startActivity(intent)
-            finish()  // Kill MainGameActivity
+            finish() // Kill this activity properly
         }
+
 
 
     }

@@ -18,6 +18,15 @@
         android:textStyle="bold" />
 
     <Button
+        android:id="@+id/buttonHighScores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="High Scores"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal" />
+
+
+    <Button
         android:id="@+id/start_BTN_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,6 +55,11 @@
         android:checked="false"
         android:layout_below="@id/start_BTN_sensor"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#888888"
+        android:textColor="@android:color/white"
+        android:padding="10dp"
+        android:background="@drawable/rounded_toggle_button" />
+
 
 </RelativeLayout>
