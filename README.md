@@ -102,23 +102,6 @@ git clone https://github.com/DanKric/PlanetDestroyer.git
 
 ---
 
-## 🌍 Google Maps API Setup
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Enable:
-    - Maps SDK for Android
-    - Fused Location Provider API
-3. Generate an API key
-4. Add to `AndroidManifest.xml`:
-
-```xml
-<meta-data
-    android:name="com.google.android.geo.API_KEY"
-    android:value="YOUR_API_KEY_HERE" />
-```
-
----
-
 ## 📦 Required Permissions
 
 Add these to your `AndroidManifest.xml`:
@@ -141,12 +124,10 @@ Add these to your `AndroidManifest.xml`:
 
 ## 🔮 Future Plans
 
-- ☁️ Firebase sync & global leaderboard
 - 🦾 Power-ups and shields
 - 🌌 Unlockable skins & ship customization
 - 🧠 Smarter AI-generated obstacle patterns
 - 🕹️ Multiplayer challenge mode (Bluetooth or online)
-
 ---
 
 🛸 **Made with Kotlin and caffeine.**  
