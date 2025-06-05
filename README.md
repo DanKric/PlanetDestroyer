@@ -1,31 +1,71 @@
 
-# 🚀 Planet Destroyer (Android Game)
+# 🪐 Planet Destroyer (Android Game)
 
-A fast-paced, Kotlin-based endless runner where you control a spaceship dodging meteors, collecting coins, and trying to survive as long as possible. Built for Android devices with both touch and tilt (sensor) control support.
-
----
-
-## 🎮 Game Features
-
-- 🌌 5-lane gameplay with random meteor spawns
-- 🕹️ Touch and tilt (accelerometer) controls
-- 💥 Explosion sound & vibration on collisions
-- 🪙 Coin spawning logic with sound feedback
-- ❤️ Lives system with heart indicators
-- 📏 Distance-based scoring system
-- 🗺️ High score saving with timestamp and location
-- 🌍 View top scores on Google Maps
-- 🎵 Background music support
-- 📱 Designed for both emulator and real devices
+**Planet Destroyer** is a fast-paced Android endless runner where the player controls a spaceship, dodging meteors, collecting coins, and surviving as long as possible to reach new high scores. Built in Kotlin, it supports both **touch** and **sensor (tilt)** controls and integrates location tracking and a high score system.
 
 ---
 
-## 📸 Screenshots
+## 📱 Features
 
-```markdown
-![Main Menu](screenshots/main_menu.png)
-![Gameplay](screenshots/in_game.png)
-![High score](screenshots/high_score.png)
+🎮 **Endless Gameplay**  
+  • 5-lane meteor dodging action  
+  • Increasing difficulty over time  
+  • Real-time lives tracking with heart icons
+
+🎯 **Controls**  
+  • Choose between **touch** and **accelerometer (tilt)** control  
+  • Smooth, responsive input
+
+🪙 **Coins & Score**  
+  • Animated coin spawning logic  
+  • Coin pickup sound & explosion effects  
+  • Distance-based scoring system (+ extra for coins)
+
+🏁 **High Score System**  
+  • Saves top 10 scores locally  
+  • Records GPS location of each score  
+  • High Score screen with Google Map view
+
+🔊 **Sound & Feedback**  
+  • Background music  
+  • Explosion sound on collision  
+  • Vibration feedback on hit
+
+🗺️ **Google Maps Integration**  
+  • Displays location of each high score  
+  • Tap scores to zoom in on the map
+
+⚙️ **Extras & Utilities**  
+  • Modular architecture with clean code separation  
+  • SharedPreferences for data persistence  
+  • Glide for animations and visual polish  
+  • Planned Firebase support for future cloud syncing
+
+---
+
+## 🛠️ Project Structure
+
+```
+PlanetDestroyer/
+├── activities/
+│   ├── StartActivity.kt
+│   ├── MainGameActivity.kt
+│   ├── GameOverActivity.kt
+│   ├── HighScoresActivity.kt
+│   └── MapActivity.kt
+├── logic/
+│   └── GameLogic.kt
+├── manager/
+│   ├── GameManager.kt
+│   └── ScoreManager.kt
+├── utils/
+│   ├── SoundUtils.kt
+│   └── VibrationUtils.kt
+├── res/
+│   ├── layout/
+│   ├── drawable/
+│   └── values/
+└── README.md
 ```
 
 ---
@@ -36,50 +76,77 @@ A fast-paced, Kotlin-based endless runner where you control a spaceship dodging 
 - Android SDK
 - Google Maps SDK
 - Fused Location Provider
-- Glide (for images/GIFs)
-- SharedPreferences (for local score storage)
+- Glide (GIF and image handling)
+- SharedPreferences
+- XML Layouts (GridLayout, RelativeLayout)
 
 ---
 
-## 📦 Project Structure
+## 🚀 Getting Started
 
-```
-PlanetDestroyer/
-├── activities/
-├── logic/
-├── manager/
-├── utils/
-├── res/
-│   ├── layout/
-│   ├── drawable/
-│   └── values/
-```
+### 1. Clone the Repository
 
----
-
-## 🚀 Run the Game
-
-1. Clone this repo:
 ```bash
 git clone https://github.com/DanKric/PlanetDestroyer.git
 ```
 
-2. Open in Android Studio
-3. Run on a physical device or emulator
+### 2. Open in Android Studio
+
+- Use Android Studio Giraffe or newer
+- Recommended: real Android device for sensor controls
+
+### 3. Run the App
+
+- On a physical device (best experience)
+- Or on an emulator with Google Play services enabled
 
 ---
+
+## 🌍 Google Maps API Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Enable:
+    - Maps SDK for Android
+    - Fused Location Provider API
+3. Generate an API key
+4. Add to `AndroidManifest.xml`:
+
+```xml
+<meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="YOUR_API_KEY_HERE" />
+```
+
+---
+
+## 📦 Required Permissions
+
+Add these to your `AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-permission android:name="android.permission.VIBRATE"/>
+```
 
 ---
 
 ## 🙋‍♂️ Author
 
 **Dan Krikli**  
-🎓 Afeka College of Engineering  
-[GitHub Profile](https://github.com/DanKric)
+🎓 Afeka Tel Aviv Academic College of Engineering  
+🔗 [GitHub Profile](https://github.com/DanKric)
 
 ---
 
-## 📝 Notes
+## 🔮 Future Plans
 
-- This is a university project made as part of the mobile development course
-- Future additions may include powerups, multiplayer, and leaderboard syncing
+- ☁️ Firebase sync & global leaderboard
+- 🦾 Power-ups and shields
+- 🌌 Unlockable skins & ship customization
+- 🧠 Smarter AI-generated obstacle patterns
+- 🕹️ Multiplayer challenge mode (Bluetooth or online)
+
+---
+
+🛸 **Made with Kotlin and caffeine.**  
