@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- RecyclerView for Scores -->
+    <!-- RecyclerView filling to the button -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/highScoresRecyclerView"
         android:layout_width="0dp"
@@ -13,22 +13,26 @@
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintBottom_toTopOf="@id/buttonReturnToMenu"
-        android:padding="8dp"
+        android:background="#EEEEEE"
+        android:paddingTop="16dp"
+        android:paddingBottom="0dp"
         android:clipToPadding="false" />
 
-    <!-- Return to Menu Button -->
+    <!-- Button with same grey background -->
     <Button
         android:id="@+id/buttonReturnToMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Return to Menu"
+        android:backgroundTint="@color/dark_green"
         map:layout_constraintTop_toBottomOf="@id/highScoresRecyclerView"
         map:layout_constraintBottom_toTopOf="@id/mapFragment"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:textColor="#000000"/>
 
-    <!-- Google Map Fragment -->
+    <!-- Map Fragment at the bottom -->
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -37,4 +41,5 @@
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,6 +39,8 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
     private val tiltCooldown: Long = 300 // ms
     private var isSensorMode: Boolean = false
     private var isFastMode: Boolean = false
+    private var tiltSpeedMode: String = "NORMAL"
+
 
 
     private val handler = Handler(Looper.getMainLooper())
@@ -94,6 +96,8 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
+        handler.removeCallbacks(runnable)
+
     }
 
 
@@ -220,6 +224,9 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
     }
 
 
+
+
+
     private fun updateMeteorViews() {
         for (i in 0 until rows) {
             for (j in 0 until cols) {
@@ -248,6 +255,10 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
                     if (j == currentLane) {
                         lives--
                         updateHeartsUI()
+                        if (explosionSound?.isPlaying == true) {
+                            explosionSound?.pause()
+                            explosionSound?.seekTo(0)
+                        }
                         explosionSound?.start()
                         vibrate()
                         val toast = Toast.makeText(this, "💥 Ouch! Lives left: $lives", Toast.LENGTH_SHORT)
@@ -267,6 +278,10 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
                             "💰 Collected! coins: $coinsCollected",
                             Toast.LENGTH_SHORT
                         )
+                        if (coinSound?.isPlaying == true) {
+                            coinSound?.pause()
+                            coinSound?.seekTo(0)
+                        }
                         coinSound?.start()
                         toast.show()
                         Handler(Looper.getMainLooper()).postDelayed({ toast.cancel() }, 800)
@@ -337,20 +352,55 @@ class MainGameActivity : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
             val isEmulator = android.os.Build.FINGERPRINT.contains("generic")
-            val tilt = if (isEmulator) event.values[2] else event.values[0]
+            val tiltX = if (isEmulator) event.values[2] else event.values[0] // Left/Right
+            val tiltZ = event.values[2] // Forward/Backward based on your test
 
             val now = System.currentTimeMillis()
             if (now - lastTiltTime > tiltCooldown) {
-                if (tilt > 3) {
-                    moveCar(1)
-                    lastTiltTime = now
-                } else if (tilt < -3) {
-                    moveCar(-1)
-                    lastTiltTime = now
+
+                // Left/Right movement (for sensor mode only)
+                if (isSensorMode) {
+                    if (tiltX > 3) {
+                        moveCar(1)
+                        lastTiltTime = now
+                    } else if (tiltX < -3) {
+                        moveCar(-1)
+                        lastTiltTime = now
+                    }
+                }
+
+                // Forward/Backward tilt controls speed (affects both modes)
+                when {
+                    tiltZ < -4 && tiltSpeedMode != "FAST" -> {
+                        tiltSpeedMode = "FAST"
+                        restartGameLoop(newDelay = 550)
+                        Toast.makeText(this, "🐇 Fast Mode", Toast.LENGTH_SHORT).show()
+                    }
+                    tiltZ > 7 && tiltSpeedMode != "SLOW" -> {
+                        tiltSpeedMode = "SLOW"
+                        restartGameLoop(newDelay = 850)
+                        Toast.makeText(this, "🐢 Slow Mode", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
     }
+
+    private fun restartGameLoop(newDelay: Long) {
+        handler.removeCallbacks(runnable)
+        runnable = object : Runnable {
+            override fun run() {
+                updateMeteorMatrix()
+                updateMeteorViews()
+                checkCollision()
+                handler.postDelayed(this, newDelay)
+                distance++
+                scoreLabel.text = "Score: $distance"
+            }
+        }
+        handler.postDelayed(runnable, newDelay)
+    }
+
 
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Score: 123"
-    android:textSize="20sp"
-    android:padding="16dp"
-    android:background="#EEEEEE"
+    android:textSize="16sp"
+    android:paddingVertical="6dp"
+    android:paddingHorizontal="12dp"
+    android:background="#E0E0E0"
     android:textColor="#000000" />

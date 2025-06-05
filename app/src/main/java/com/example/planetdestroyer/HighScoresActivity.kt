@@ -10,6 +10,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 
 
 class HighScoresActivity : AppCompatActivity() {
@@ -27,7 +29,10 @@ class HighScoresActivity : AppCompatActivity() {
             finish()
         }
 
-        setupRecyclerView()
+        Handler(Looper.getMainLooper()).postDelayed({
+            setupRecyclerView()
+        }, 1000) // 1000ms = 1 second delay
+
         setupMap()
     }
 
