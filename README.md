@@ -69,18 +69,6 @@ git clone https://github.com/DanKric/PlanetDestroyer.git
 
 ---
 
-## 🌍 Setup Google Maps API
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Enable **Maps SDK** and **Fused Location Provider**
-3. Generate an API key
-4. Add it in `AndroidManifest.xml`:
-```xml
-<meta-data
-    android:name="com.google.android.geo.API_KEY"
-    android:value="YOUR_API_KEY_HERE" />
-```
-
 ---
 
 ## 🙋‍♂️ Author
